@@ -1,6 +1,6 @@
 # 專案名稱: 即時匯率地圖
 
-![alt text](static/image/image.png)
+![alt text](static/images/image.png)
 
 
 ## 專案說明
@@ -22,4 +22,4 @@
 
 ## 部署尚未完成 (待續)
 
-![alt text](static/image/nginx.png)
+![alt text](static/images/nginx.png)
