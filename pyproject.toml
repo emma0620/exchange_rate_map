@@ -16,6 +16,9 @@ mplcursors = "^0.5.3"
 plotly = "^5.24.1"
 
 
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.0.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

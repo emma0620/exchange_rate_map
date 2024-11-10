@@ -15,8 +15,15 @@
                 console.error("JSON parse error:", error, "Response Text:", responseText);
             }
         });
+
+        function checkAmount(input) {
+            if (input.value <= 0) {
+                alert("請輸入大於 0 的數字");
+                input.value = "";  // 清空不符合的輸入
+            }
+        }
     </script>
- 
+
 </head>
 <body>
     {%include 'shared/navbar.html' %}

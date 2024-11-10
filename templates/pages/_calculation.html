@@ -1,0 +1,47 @@
+
+
+<h3 style="color: rgb(101,101,101);border-bottom: 3px solid #D1AEAD;">匯率試算</h3>
+<form method="POST" action="{% url 'pages:exchange_calculation' %}"
+      hx-post="{% url 'pages:exchange_calculation' %}"
+      hx-target="#result"
+      hx-swap="none">
+    {% csrf_token %}
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <label for="amount">我想要將</label>
+                </td>
+                <td>
+                    <input type="number" id="amount" name="amount" required min="1"
+                           oninput="checkAmount(this)" title="請輸入大於 0 的數字" placeholder="輸入金額" >
+                    <select id="currency_from" name="currency_from" required>
+                        {% for exchange_rate in exchange_rates %}
+                           {% if exchange_rate.rate != 0 %}
+                            <option value="{{ exchange_rate.currency }}">{{ exchange_rate.currency }} ({{ exchange_rate.currency_zh }}) 參考匯率: {{ exchange_rate.rate }}</option>
+                           {% endif %}
+                          {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="currency_to">兌換成</label>
+                </td>
+                <td>
+                    <input type="number" id="result" name="result" value="{{results}}" readonly placeholder="按換算後, 顯示結果" title="請於上方輸入欲試算金額">
+                    <select id="currency_to" name="currency_to" required>
+                        {% for exchange_rate in exchange_rates %}
+                            {% if exchange_rate.rate != 0 %}
+                            <option value="{{ exchange_rate.currency }}">{{ exchange_rate.currency }} ({{ exchange_rate.currency_zh }}) 參考匯率: {{ exchange_rate.rate }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <button type="submit">換算</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+<p style=" color: rgb(81,31,30);">※外幣小數點第2位後無條件捨去，臺幣元以下無條件捨去。 <br>※本功能試算內容及結果僅提供參考，實際交易匯率以交易當下之牌告匯率為準。
+</p>

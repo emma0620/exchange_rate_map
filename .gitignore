@@ -1,3 +1,6 @@
 .venv/
 __pycache__/
+memo.txt
+db.sqlite3
+python-ec2-key.pem
 
