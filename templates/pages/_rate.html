@@ -4,7 +4,8 @@
 </h3>
 
 
-<div>
+
+<div> 
 
     <table style="background-color: rgb(240, 230, 229);box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); border-radius: 5px;">
         <thead>
@@ -15,15 +16,23 @@
         </thead>
         <tbody style=" text-align: left; color: rgb(96,93,84);">
             {% for exchange_rate in exchange_rates %}
-                {% if exchange_rate.currency != 'TWD' %}  <!-- 排除台幣 -->
+                {% if exchange_rate.currency != 'TWD' and exchange_rate.rate != 0 %}  <!-- 排除台幣 -->
                     <tr>
-                        <td>{{ exchange_rate.currency }} ({{ exchange_rate.currency_zh }})</td>
                         <td>
-                            {% if exchange_rate.rate == 0 %}
-                                -
-                            {% else %}
+                            <a href="#" hx-get="{% url 'pages:rate_history' exchange_rate.currency %}" hx-target="#rate-content" style="
+                                color: #5C6A6A; 
+                                font-weight: bold;"
+                                onmouseover="this.style.color='#802A2A';" 
+                                onmouseout="this.style.color='#5C6A6A';" 
+                                title="查看匯率最近三個月走勢圖">
+                                {{ exchange_rate.currency }} ({{ exchange_rate.currency_zh }})
+                            </a>
+
+                        </td>
+                        <td>
+                           
                                 {{ exchange_rate.rate }} <!-- 顯示匯率 -->
-                            {% endif %}
+                           
                         </td>
                     </tr>
                 {% endif %}

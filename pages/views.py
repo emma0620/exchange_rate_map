@@ -1,9 +1,14 @@
 import requests
 from django.http import JsonResponse
 from django.shortcuts import render
-
+import pandas as pd
+import matplotlib.pyplot as plt
+import plotly.express as px
+from io import StringIO
+from django.http import HttpResponse
 from .lib.exchange_rate import fetch_exchange_rates
 from .lib.map import map
+
 
 
 def index(request):
@@ -37,6 +42,54 @@ def exchange_calculation(request):
 
     # 返回 JSON 響應，告訴前端重新整理頁面
     return JsonResponse({"results": results})
+
+
+def rate_history(request, currency):
+    # Step 1: 抓取匯率資料
+    url = f"https://rate.bot.com.tw/xrt/flcsv/0/L3M/{currency}"
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        return HttpResponse("無法取得匯率資料", status=404)
+
+    # Step 2: 讀取 CSV 資料
+    data = response.text
+    df = pd.read_csv(StringIO(data), header=1, encoding='utf-8-sig')
+    
+    # 確認欄位名稱是否正確
+    df.columns = ['資料日期', '貨幣', '匯率類型', '現金買入', '現金賣出'] + list(df.columns[5:])
+
+    # 保留所需欄位並轉換資料格式
+    df = df[['資料日期', '現金買入', '現金賣出']].dropna()
+    df['資料日期'] = pd.to_datetime(df['資料日期'], format='%Y%m%d', errors='coerce')
+    df['現金買入'] = pd.to_numeric(df['現金買入'], errors='coerce')
+    df['現金賣出'] = pd.to_numeric(df['現金賣出'], errors='coerce')
+    
+    # 刪除任何缺失值
+    df = df.dropna()
+
+    # Step 3: 使用 Plotly 繪製匯率走勢圖
+    fig = px.line(df, x='資料日期', y=['現金買入', '現金賣出'],
+                  labels={'value': '匯率', 'variable': '匯率類型'},
+                  title=f"{currency} 匯率最近三個月走勢圖")
+    fig.update_layout(
+        xaxis_title='資料日期',
+        yaxis_title='匯率',
+        template='plotly_white'
+    )
+
+    # Step 4: 儲存 Plotly 圖表為 HTML 文件
+    html_path = f'static/images/{currency}_rate_history.html'
+    fig.write_html(html_path)
+
+    # Step 5: 回傳 iframe HTML 片段
+    html_content = f"""
+    <iframe src="/{html_path}" width="100%" height="400px" frameborder="0"
+            style="background-color: #D1AEAD; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); border-radius: 5px;">
+    </iframe>
+    """
+    return HttpResponse(html_content)
+
 
 
 def about(request):

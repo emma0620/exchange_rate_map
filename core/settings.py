@@ -13,7 +13,12 @@ SECRET_KEY = "django-insecure-=494kiolflj1m@#@)zx_j*-_-ir^t1iuh+(oe)jqt@$y4!45!l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "3.112.255.167",  # 公共IP
+    "127.0.0.1",  # 本地IP (也可寫localhost)
+    "localhost",
+
+]
 
 
 # Application definition

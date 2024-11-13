@@ -45,7 +45,7 @@ def map(exchange_rates):
     )
 
     # 將地圖保存為 HTML
-    html_path = "static/map_with_exchange_rates.html"
+    html_path = "static/images/map_with_exchange_rates.html"
     fig.write_html(html_path)
 
     return html_path
