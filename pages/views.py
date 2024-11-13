@@ -1,14 +1,14 @@
-import requests
-from django.http import JsonResponse
-from django.shortcuts import render
-import pandas as pd
-import matplotlib.pyplot as plt
-import plotly.express as px
 from io import StringIO
-from django.http import HttpResponse
+
+import matplotlib.pyplot as plt
+import pandas as pd
+import plotly.express as px
+import requests
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
+
 from .lib.exchange_rate import fetch_exchange_rates
 from .lib.map import map
-
 
 
 def index(request):
@@ -54,32 +54,36 @@ def rate_history(request, currency):
 
     # Step 2: 讀取 CSV 資料
     data = response.text
-    df = pd.read_csv(StringIO(data), header=1, encoding='utf-8-sig')
-    
+    df = pd.read_csv(StringIO(data), header=1, encoding="utf-8-sig")
+
     # 確認欄位名稱是否正確
-    df.columns = ['資料日期', '貨幣', '匯率類型', '現金買入', '現金賣出'] + list(df.columns[5:])
+    df.columns = ["資料日期", "貨幣", "匯率類型", "現金買入", "現金賣出"] + list(
+        df.columns[5:]
+    )
 
     # 保留所需欄位並轉換資料格式
-    df = df[['資料日期', '現金買入', '現金賣出']].dropna()
-    df['資料日期'] = pd.to_datetime(df['資料日期'], format='%Y%m%d', errors='coerce')
-    df['現金買入'] = pd.to_numeric(df['現金買入'], errors='coerce')
-    df['現金賣出'] = pd.to_numeric(df['現金賣出'], errors='coerce')
-    
+    df = df[["資料日期", "現金買入", "現金賣出"]].dropna()
+    df["資料日期"] = pd.to_datetime(df["資料日期"], format="%Y%m%d", errors="coerce")
+    df["現金買入"] = pd.to_numeric(df["現金買入"], errors="coerce")
+    df["現金賣出"] = pd.to_numeric(df["現金賣出"], errors="coerce")
+
     # 刪除任何缺失值
     df = df.dropna()
 
     # Step 3: 使用 Plotly 繪製匯率走勢圖
-    fig = px.line(df, x='資料日期', y=['現金買入', '現金賣出'],
-                  labels={'value': '匯率', 'variable': '匯率類型'},
-                  title=f"{currency} 匯率最近三個月走勢圖")
+    fig = px.line(
+        df,
+        x="資料日期",
+        y=["現金買入", "現金賣出"],
+        labels={"value": "匯率", "variable": "匯率類型"},
+        title=f"{currency} 匯率最近三個月走勢圖",
+    )
     fig.update_layout(
-        xaxis_title='資料日期',
-        yaxis_title='匯率',
-        template='plotly_white'
+        xaxis_title="資料日期", yaxis_title="匯率", template="plotly_white"
     )
 
     # Step 4: 儲存 Plotly 圖表為 HTML 文件
-    html_path = f'static/images/{currency}_rate_history.html'
+    html_path = f"static/images/{currency}_rate_history.html"
     fig.write_html(html_path)
 
     # Step 5: 回傳 iframe HTML 片段
@@ -89,7 +93,6 @@ def rate_history(request, currency):
     </iframe>
     """
     return HttpResponse(html_content)
-
 
 
 def about(request):

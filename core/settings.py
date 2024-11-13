@@ -17,7 +17,6 @@ ALLOWED_HOSTS = [
     "3.112.255.167",  # 公共IP
     "127.0.0.1",  # 本地IP (也可寫localhost)
     "localhost",
-
 ]
 
 

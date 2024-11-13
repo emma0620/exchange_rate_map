@@ -5,7 +5,7 @@
 
 
 
-<div> 
+<div>
 
     <table style="background-color: rgb(240, 230, 229);box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); border-radius: 5px;">
         <thead>
@@ -20,19 +20,19 @@
                     <tr>
                         <td>
                             <a href="#" hx-get="{% url 'pages:rate_history' exchange_rate.currency %}" hx-target="#rate-content" style="
-                                color: #5C6A6A; 
+                                color: #5C6A6A;
                                 font-weight: bold;"
-                                onmouseover="this.style.color='#802A2A';" 
-                                onmouseout="this.style.color='#5C6A6A';" 
+                                onmouseover="this.style.color='#802A2A';"
+                                onmouseout="this.style.color='#5C6A6A';"
                                 title="查看匯率最近三個月走勢圖">
                                 {{ exchange_rate.currency }} ({{ exchange_rate.currency_zh }})
                             </a>
 
                         </td>
                         <td>
-                           
+
                                 {{ exchange_rate.rate }} <!-- 顯示匯率 -->
-                           
+
                         </td>
                     </tr>
                 {% endif %}
