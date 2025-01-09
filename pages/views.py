@@ -57,8 +57,9 @@ def rate_history(request, currency):
     df = pd.read_csv(StringIO(data), header=1, encoding="utf-8-sig")
 
     # 確認欄位名稱是否正確
-    df.columns = ["資料日期", "貨幣", "匯率類型", "現金買入", "現金賣出"] + list(
-        df.columns[5:]
+    df.columns = [ "資料日期", "幣別", "匯率買入標籤", "現金買入", "即期買入", "遠期10天買入", "遠期30天買入", "遠期60天買入", "遠期90天買入", 
+        "遠期120天買入", "遠期150天買入", "遠期180天買入", "匯率賣出標籤", "現金賣出"] + list(
+        df.columns[14:]
     )
 
     # 保留所需欄位並轉換資料格式
