@@ -23,5 +23,5 @@
 
 ![alt text](static/images/rate_history.png)
 
-## Docker運行成功
+## Docker運行
 ![alt text](static/images/docker.png)
