@@ -1,0 +1,10 @@
+.venv
+__pycache__/
+db.sqlite3
+.pre-commit-config.yaml
+makefile
+src/
+node_modules
+.gitignore
+.git
+README.md

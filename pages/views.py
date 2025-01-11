@@ -1,6 +1,6 @@
 from io import StringIO
 
-import matplotlib.pyplot as plt
+
 import pandas as pd
 import plotly.express as px
 import requests

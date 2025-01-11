@@ -23,6 +23,5 @@
 
 ![alt text](static/images/rate_history.png)
 
-## 部署尚未完成 (待續)
-
-![alt text](static/images/nginx.png)
+## docker運行成功
+![alt text](static/images/docker.png)

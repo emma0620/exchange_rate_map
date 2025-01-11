@@ -11,7 +11,6 @@ django = "^5.1.2"
 requests = "^2.32.3"
 beautifulsoup4 = "^4.12.3"
 geopandas = "^1.0.1"
-matplotlib = "^3.9.2"
 mplcursors = "^0.5.3"
 plotly = "^5.24.1"
 
